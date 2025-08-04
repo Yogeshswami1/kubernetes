@@ -1,0 +1,59 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: backend
+# spec:
+#   type: NodePort  # <-- Add this line to expose as NodePort
+#   selector:
+#     app: backend
+#   ports:
+#     - protocol: TCP
+#       port: 5000
+#       targetPort: 5000
+#       nodePort: 30001  # <-- Add NodePort here (can be any port between 30000-32767)
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: backend
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: backend
+#   template:
+#     metadata:
+#       labels:
+#         app: backend
+#     spec:
+#       containers:
+#         - name: backend
+#           image: yogeshkumar2001/task-server
+#           ports:
+#             - containerPort: 5000
+#           env:
+#             - name: MONGO_URI
+#               value: mongodb://mongo:27017/taskdb
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: yogeshkumar2001/task-server:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGO_URI
+              value: mongodb+srv://yogeshkumar86077:123@cluster0.g0nnk8k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
